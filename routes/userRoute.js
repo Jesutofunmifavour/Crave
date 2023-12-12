@@ -1,6 +1,6 @@
 const express = require('express');
 const { userSignup, userLogin, forgetPassword, verificationCode, passwordReset,  } = require('../controllers/authController')
-const { accountProfile } = require('../controllers/accountController')
+const { accountSettings, accountProfile, emailSettings, tutorProfile } = require('../controllers/accountController')
     // , , verificationCode, passwordReset, userLogout 
 const {authenticateUser } = require('../middlewares/userMiddleware')
 const { body, validationResult } = require('express-validator');
@@ -35,6 +35,16 @@ router.get('/reset-password', (req, res) => {
 });
 
 
+router.get('/landing-page', (req, res) => {
+    res.render('landingPage')
+});
+
+
+router.get('/account-settings', (req, res) => {
+    res.render('account')
+});
+
+
 router.get('/profile-customization', authenticateUser, (req, res) => {
     res.render('profile', { user: req.session.user })
 });
@@ -44,7 +54,7 @@ router.get('/dashboard', authenticateUser, (req, res) => {
     res.render('dashboard', { user: req.session.user })
 });
 
-router.get('/home', (req, res) => {
+router.get('/account-settings', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/user/login');
    }
@@ -52,7 +62,7 @@ router.get('/home', (req, res) => {
    // Access user information from the session
     const user = req.session.user;
 
-    res.render('home', { user })
+    res.render('account-settings', { user })
 });
 
   
@@ -71,8 +81,12 @@ router.post('/reset-password', passwordReset)
 // router.post('/logout', userLogout)
 
 
-//profile-settings
+//account-settings
 router.post('/profile-customization', authenticateUser, accountProfile)
+router.post('/account-settings', authenticateUser, accountSettings )
+router.post('/email-settings', authenticateUser, emailSettings)
+router.post('/tutor-profile', authenticateUser, tutorProfile)
+
 
 
 module.exports = router

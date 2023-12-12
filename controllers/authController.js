@@ -134,7 +134,7 @@ const userLogin = async (req, res) => {
 
         req.session.user = existingUser;
         req.flash('success', "Login Successfull");
-        return res.redirect('/user/dashboard')
+        return res.redirect('/user/account-settings')
     } catch (error) {
         console.log(error)
         req.flash('error', "Internal Server Error");
